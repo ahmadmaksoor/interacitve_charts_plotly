@@ -41,65 +41,34 @@ def closed_loop_3():
     gi_1 = 0.062
     i0_1 = -109.69
     gi_2n = 0.0432
-    i0_2n = -77.31
-    gi_2p = 0.0607
-    i0_2p = -108.15
-    gi_3n = 0.0492
-    i0_3n = -87.338
-    gi_3p = 0.0693
-    i0_3p = -123.33
+3
 
     zer_i2n = -i0_2n / gi_2n
     zer_i2p = -i0_2p / gi_2p
-    zer_i2 = (zer_i2n + zer_i2p) / 2
-    zer_i3n = -i0_3n / gi_3n
-    zer_i3p = -i0_3p / gi_3p
-    zer_i3 = (zer_i3n + zer_i3p) / 2
+
 
     kadcv_1 = 7.4531
     adcv1_0 = +7.9142
     kadcv_2 = 7.3441
-    adcv2_0 = -3.8098
-    kadcv_3 = 7.2585
-    adcv3_0 = 9.542
+
 
     gv_1 = 1 / kadcv_1
     v0_1 = -adcv1_0 / kadcv_1
-    gv_2 = 1 / kadcv_2
-    v0_2 = -adcv2_0 / kadcv_2
-    gv_3 = 1 / kadcv_3
-    v0_3 = -adcv3_0 / kadcv_3
+
 
     V3_offset = 2
-    V2_offset = 2
-    V1_offset = 2
-    # I3_offset=0.4;
-    # I2_offset=0.4;
-    # I1_offset=0.4;
-    Imax = 50
-    Vmax = 100
 
-    Nvar = 8
-    Nbytes = 2 + Nvar * 2
+
+
 
     global dictoflist
 
-    # dictoflist={'Phi12':[1],'Phi13':[2],'V1_adc':[3],'V2_adc':[4],'V3_adc':[5],'I1_adc':[6],'I2_adc':[7],'I3_adc':[8]}
-    # print(dictoflist)
-    try:
-        # while True:
 
-        # s=ser.read(Nbytes)
-        # if len(list(s))==Nbytes:
-        #     if k<=Nsamples:
-        #         templ=[]
-        #         for i in range(Nvar):
-        #             templ.append(struct.unpack("<H",s[1+2*i:2*(i+1)+1],)[0])
+    try:
         templ = [10, 20, 30, 40, 50, 60, 180, 180]
         temp_meas.append(templ)
         k = k + 1
 
-        # else:
 
         measures_mean = np.mean(temp_meas, 0)
         I3_adc = np.round(measures_mean[0] / 10 - Imax, 2)
@@ -121,38 +90,18 @@ def closed_loop_3():
 
         I1 = np.round(gi_1 * I1_adc + i0_1, 2)
 
-        # I3=np.round(gi_3*measures_mean[0]+i0_3+I3_offset,2)
-        # I2=np.round(gi_2*measures_mean[1]+i0_2+I2_offset,2)
-        # I1=np.round(gi_1*measures_mean[2]+i0_1+I1_offset,2)
-        V3 = np.round(gv_3 * V3_adc + v0_3 + V3_offset, 2)
-        V2 = np.round(gv_2 * V2_adc + v0_2 + V2_offset, 2)
+
         V1 = np.round(gv_1 * V1_adc + v0_1 + V1_offset, 2)
         Phi12 = np.round(measures_mean[6] - 90, 2)
         Phi13 = np.round(measures_mean[7] - 90, 2)
-        # # measures_std=np.std(temp_meas,0)
-        # results=[Phi12,Phi13,V1_adc,V2_adc,V3_adc,I1_adc,I2_adc,I3_adc]
 
-        # dictoflist={'Phi12':[Phi12],'Phi13':[Phi13],'V1_adc':[V1_adc],'V2_adc':[V2_adc],'V3_adc':[V3_adc],'I1_adc':[I1_adc],'I2_adc':[I2_adc],'I3_adc':[I3_adc]}
+
         dictoflist["phi12"].append(Phi12)
         dictoflist["phi13"].append(Phi13)
-        dictoflist["V1"].append(V1_adc)
-        dictoflist["V2"].append(V2_adc)
-        dictoflist["V3"].append(V3_adc)
-        dictoflist["I1"].append(I1_adc)
-        dictoflist["I2"].append(I2_adc)
-        dictoflist["I3"].append(I3_adc)
 
-        # dictoflist={'Phi12':[1],'Phi13':[2],'V1_adc':[3],'V2_adc':[4],'V3_adc':[5],'I1_adc':[6],'I2_adc':[7],'I3_adc':[8]}
-        # print(dictoflist)
-        # •     print(measures_mean)
-
-        # csvl.append(results)
 
         temp_meas = []
         k = 0
-
-    # if s[1]==1:
-    #     csvl.append(s[2:-1])
     except Exception as e:
         print(e)
         pass
