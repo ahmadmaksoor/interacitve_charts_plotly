@@ -1,4 +1,4 @@
-# Create an interactives charts that contains value in real-time
+# Create an interactive charts that contains value in real-time
 
 I've create a web page using Plotly dash to make charts that show differents values from a data source.
 
